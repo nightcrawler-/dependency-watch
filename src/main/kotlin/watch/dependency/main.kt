@@ -19,9 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
-import okhttp3.logging.HttpLoggingInterceptor.Logger
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import kotlin.time.Duration
@@ -64,11 +61,12 @@ private abstract class DependencyWatchCommand(
 		val okhttp = OkHttpClient.Builder()
 			.apply {
 				if (debug.enabled) {
-					addNetworkInterceptor(HttpLoggingInterceptor(object : Logger {
-						override fun log(message: String) {
-							debug.log { message }
-						}
-					}).setLevel(BASIC))
+					// TODO re-enable once OkHttp ships https://github.com/square/okhttp/pull/6198
+					//addNetworkInterceptor(HttpLoggingInterceptor(object : Logger {
+					//	override fun log(message: String) {
+					//		debug.log { message }
+					//	}
+					//}).setLevel(BASIC))
 				}
 			}
 			.build()
